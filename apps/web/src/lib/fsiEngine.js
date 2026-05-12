@@ -120,12 +120,31 @@ function calcRevenueMomentumScore(monthlyRevenue, monthlyBurn) {
   };
 }
 
-// ── "Oh Sh*t Moment" Generator ─────────────────────────────
+// ── Diagnostic Message Generator (band-aware) ──────────────
 
-function generateOhShitMoment(metrics) {
+/**
+ * Generates a band-aware diagnostic message.
+ *
+ * Scores 86-100 (Investor Grade):
+ *   Praise + growth opportunity. No fear-based language.
+ *   Label: "Investor Take" with purple/green styling.
+ *
+ * Scores 66-85 (Growing):
+ *   Positive framing, acknowledge strengths, suggest next level.
+ *   Label: "Your Strengths" with green styling.
+ *
+ * Scores 51-65 (Stable):
+ *   Moderate tone — good fundamentals, here's the improvement path.
+ *   Label: "What Needs Attention" with amber styling.
+ *
+ * Scores 0-50 (Critical/Struggling):
+ *   Urgent, direct, fear-based — the classic "Oh Sh*t Moment".
+ *   Label: "The 'Oh Sh*t' Moment" with red styling.
+ */
+function generateOhShitMoment(metrics, band) {
   const { runway, burnMultiple, cacLtv, churn, revenueMomentum } = metrics;
 
-  // Find worst metric
+  // Sort metrics by score (worst first)
   const sorted = [
     { key: 'runway', score: runway.score, value: runway.value },
     { key: 'burnMultiple', score: burnMultiple.score, value: burnMultiple.value },
@@ -135,7 +154,68 @@ function generateOhShitMoment(metrics) {
   ].sort((a, b) => a.score - b.score);
 
   const worst = sorted[0];
+  const best = sorted[4]; // highest-scoring metric
 
+  // ── Investor Grade (86-100): Praise + Growth ──────────
+  if (band.min >= 86) {
+    // Find the strongest metric for praise
+    const strongLabels = {
+      runway: `exceptional runway of ${runway.value} months`,
+      burnMultiple: `burn multiple of just ${burnMultiple.value}x`,
+      cacLtv: `LTV:CAC ratio of ${cacLtv.value}x`,
+      churn: `churn rate of only ${churn.value}%`,
+      revenueMomentum: `revenue-to-burn ratio of ${revenueMomentum.value}x`,
+    };
+
+    const weakLabels = {
+      runway: `extend runway beyond ${runway.value} months`,
+      burnMultiple: `optimize your burn multiple of ${burnMultiple.value}x further`,
+      cacLtv: `push LTV:CAC from ${cacLtv.value}x toward 5x+`,
+      churn: `drive churn below 1% from ${churn.value}%`,
+      revenueMomentum: `scale revenue further beyond ${revenueMomentum.value}x burn`,
+    };
+
+    const strongMetric = strongLabels[best.key] || 'strong fundamentals';
+    const improvementArea = weakLabels[worst.key] || 'fine-tune operations';
+
+    return `Your startup is in elite territory. With ${strongMetric}, you're already operating at a level most founders only dream of. The next frontier: ${improvementArea} to move from "investor-ready" to "investor-fighting-over-you."`;
+  }
+
+  // ── Growing (66-85): Positive + Balanced ─────────────
+  if (band.min >= 66) {
+    const goodPoints = [];
+    if (runway.score >= 70) goodPoints.push(`${runway.value} months of runway`);
+    if (burnMultiple.score >= 70) goodPoints.push(`efficient burn (${burnMultiple.value}x)`);
+    if (cacLtv.score >= 70) goodPoints.push(`healthy unit economics (${cacLtv.value}x LTV:CAC)`);
+    if (churn.score >= 70) goodPoints.push(`strong retention (${churn.value}% churn)`);
+    if (revenueMomentum.score >= 70) goodPoints.push(`solid revenue momentum (${revenueMomentum.value}x)`);
+
+    const strengths = goodPoints.length > 0
+      ? `Your ${goodPoints.join(', ')} show you've built real traction.`
+      : 'You have a solid foundation.';
+
+    return `${strengths} To crack the top tier, focus on your ${worst.key === 'runway' ? 'runway' : worst.key === 'burnMultiple' ? 'capital efficiency' : worst.key === 'cacLtv' ? 'unit economics' : worst.key === 'churn' ? 'retention' : 'revenue growth'} — it's the one metric holding you back from investor-grade status.`;
+  }
+
+  // ── Stable (51-65): Moderate, Constructive ───────────
+  if (band.min >= 51) {
+    switch (worst.key) {
+      case 'runway':
+        return `Your fundamentals are decent, but ${worst.value} months of runway needs attention. Most investors want to see 18+ months before writing a check. Extending this is your highest-ROI move.`;
+      case 'burnMultiple':
+        return `Your burn multiple of ${worst.value}x is workable but not great. For every $1 you earn, you spend $${worst.value} — tightening this to below 2x would change how investors see you.`;
+      case 'cacLtv':
+        return `Your LTV:CAC of ${worst.value}x works, but 3x+ is where serious businesses live. Improving this will directly boost your valuation.`;
+      case 'churn':
+        return `Your churn at ${worst.value}% isn't alarming, but every percent above 2% is compounding growth you're leaving on the table.`;
+      case 'revenueMomentum':
+        return `Your revenue covers ${Math.round(worst.value * 100)}% of burn. Getting to 1x+ (profitable on paper) would be a game-changer for your fundraising story.`;
+      default:
+        return `Your fundamentals are stable but have room to grow. Focus on the weakest metric to unlock the next level.`;
+    }
+  }
+
+  // ── Critical/Struggling (0-50): Classic "Oh Sh*t" ────
   switch (worst.key) {
     case 'runway':
       if (worst.value < 3) return `At your current burn, you have ${worst.value} months before the lights go out. This is an emergency.`;
@@ -165,6 +245,18 @@ function generateOhShitMoment(metrics) {
     default:
       return `Your fundamentals need work before scaling. Focus on the weakest metric first.`;
   }
+}
+
+/**
+ * Returns the appropriate UI label for the diagnostic section based on band.
+ * @param {{ min: number, max: number, label: string }} band
+ * @returns {{ label: string, emoji: string, tone: 'praise'|'positive'|'neutral'|'danger' }}
+ */
+function getDiagnosticLabel(band) {
+  if (band.min >= 86) return { label: 'Investor Take', emoji: '🚀', tone: 'praise' };
+  if (band.min >= 66) return { label: 'Your Strengths', emoji: '💪', tone: 'positive' };
+  if (band.min >= 51) return { label: 'What Needs Attention', emoji: '🔍', tone: 'neutral' };
+  return { label: "The 'Oh Sh*t' Moment", emoji: '⚠️', tone: 'danger' };
 }
 
 // ── Metric Status Helper ───────────────────────────────────
@@ -305,9 +397,10 @@ export function calculateFSI(inputs) {
   const score = Math.max(0, Math.min(100, Math.round(rawScore)));
   const band = getBand(score);
 
-  // Generate diagnostic one-liner
+  // Generate band-aware diagnostic message
   const metrics = { runway, burnMultiple, cacLtv, churn, revenueMomentum };
-  const ohShitMoment = generateOhShitMoment(metrics);
+  const ohShitMoment = generateOhShitMoment(metrics, band);
+  const diagnosticLabel = getDiagnosticLabel(band);
 
   // Build metric breakdown array
   const metricBreakdown = [
@@ -325,10 +418,11 @@ export function calculateFSI(inputs) {
     emoji: band.emoji,
     description: band.description,
     ohShitMoment,
+    diagnosticLabel,
     metricBreakdown,
     runwayMonths: runway.value === Infinity ? '∞' : runway.value,
   };
 }
 
 // Export constants for use in UI
-export { BANDS, BENCHMARKS };
+export { BANDS, BENCHMARKS, getDiagnosticLabel };

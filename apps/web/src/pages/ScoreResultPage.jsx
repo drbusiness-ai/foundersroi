@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button.jsx';
 import Header from '@/components/Header.jsx';
 import Footer from '@/components/Footer.jsx';
 import SurvivalBadge from '@/components/SurvivalBadge.jsx';
-import { BANDS } from '@/lib/fsiEngine.js';
+import { BANDS, getDiagnosticLabel } from '@/lib/fsiEngine.js';
 
 const ScoreResultPage = () => {
   const [searchParams] = useSearchParams();
@@ -20,13 +20,16 @@ const ScoreResultPage = () => {
     const clampedScore = Math.max(0, Math.min(100, score));
     const bandData = BANDS.find(b => clampedScore >= b.min && clampedScore <= b.max) || BANDS[2];
 
+    const diagnosticLabel = getDiagnosticLabel(bandData);
+
     setData({
       score: clampedScore,
       companyName: company,
       band: bandData.label,
       color: bandData.color,
       emoji: bandData.emoji,
-      ohShitMoment: "Analyze your startup fundamentals before it's too late."
+      ohShitMoment: "Analyze your startup fundamentals before it's too late.",
+      diagnosticLabel,
     });
   }, [searchParams]);
 

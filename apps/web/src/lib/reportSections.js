@@ -13,10 +13,12 @@ import { BANDS, BENCHMARKS } from './fsiEngine.js';
 // ── Section Builders ───────────────────────────────────────
 
 function buildSurvivalStory(fsiResult, formData) {
-  const { score, band, emoji, description, ohShitMoment } = fsiResult;
+  const { score, band, emoji, description, ohShitMoment, diagnosticLabel } = fsiResult;
   const name = formData.companyName || 'Your startup';
+  const diag = diagnosticLabel || { label: "The 'Oh Sh*t' Moment", emoji: '⚠️' };
 
   return [
+    `${diag.emoji} ${diag.label}`,
     `${name} scores ${score}/100 — ${emoji} ${band}.`,
     description,
     ohShitMoment,

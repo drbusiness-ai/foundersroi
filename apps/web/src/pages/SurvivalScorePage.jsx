@@ -314,14 +314,27 @@ const ResultView = React.memo(({ result, companyName, hasUnlocked, onUnlockClick
       <div className="h-px w-full bg-border" />
 
       <div className="space-y-8">
-        <div className="text-center max-w-2xl mx-auto mb-12">
-          <h3 className="text-2xl font-bold mb-4">The "Oh Sh*t" Moment</h3>
-          <div className="p-6 rounded-xl bg-destructive/10 border border-destructive/20 inline-block">
-            <p className="text-lg font-medium text-destructive-foreground">
-              "{result.ohShitMoment}"
-            </p>
-          </div>
-        </div>
+        {(() => {
+          const diag = result.diagnosticLabel || { label: "The 'Oh Sh*t' Moment", emoji: '⚠️', tone: 'danger' };
+          const toneStyles = {
+            praise:   { bg: 'bg-green-50 dark:bg-green-950/20', border: 'border-green-300 dark:border-green-700', text: 'text-green-800 dark:text-green-200' },
+            positive: { bg: 'bg-green-50 dark:bg-green-950/20', border: 'border-green-300 dark:border-green-700', text: 'text-green-800 dark:text-green-200' },
+            neutral:  { bg: 'bg-amber-50 dark:bg-amber-950/20', border: 'border-amber-300 dark:border-amber-700', text: 'text-amber-800 dark:text-amber-200' },
+            danger:   { bg: 'bg-destructive/10', border: 'border-destructive/20', text: 'text-destructive-foreground' },
+          };
+          const style = toneStyles[diag.tone] || toneStyles.danger;
+
+          return (
+            <div className="text-center max-w-2xl mx-auto mb-12">
+              <h3 className="text-2xl font-bold mb-4">{diag.emoji} {diag.label}</h3>
+              <div className={`p-6 rounded-xl border inline-block ${style.bg} ${style.border}`}>
+                <p className={`text-lg font-medium ${style.text}`}>
+                  "{result.ohShitMoment}"
+                </p>
+              </div>
+            </div>
+          );
+        })()}
 
         <h3 className="text-2xl font-bold text-center mb-8">Metric Breakdown</h3>
 

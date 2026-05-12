@@ -27,11 +27,12 @@ Rules:
 5. Each section must stand alone (founders often skim)`;
 
 function buildUserPrompt(fsiResult, formData) {
-  const { score, band, emoji, description, ohShitMoment, metricBreakdown, runwayMonths } = fsiResult;
+  const { score, band, emoji, description, ohShitMoment, diagnosticLabel, metricBreakdown, runwayMonths } = fsiResult;
   const name = formData.companyName || 'the startup';
   const stage = formData.stage || 'Not specified';
   const model = formData.businessModel || 'Not specified';
   const worries = (formData.worry || []).join(', ') || 'None specified';
+  const diag = diagnosticLabel || { label: "The 'Oh Sh*t' Moment", emoji: '⚠️' };
 
   return `Analyze this startup and produce a JSON report:
 
@@ -44,7 +45,7 @@ FSI SURVIVAL SCORE: ${score}/100
 BAND: ${emoji} ${band} — ${description}
 RUNWAY: ${runwayMonths} months
 
-OH SH*T MOMENT (deterministic): "${ohShitMoment}"
+${diag.emoji} ${diag.label.toUpperCase()} (deterministic): "${ohShitMoment}"
 
 METRIC BREAKDOWN:
 ${metricBreakdown.map(m => `  - ${m.label}: ${m.value}${m.unit} → Score ${m.score}/100 (Healthy: ${m.benchmark.good}${m.unit})`).join('\n')}

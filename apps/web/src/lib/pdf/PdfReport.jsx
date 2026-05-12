@@ -35,6 +35,7 @@ const COLORS = {
   white: '#FFFFFF',
   green: '#22C55E',
   yellow: '#EAB308',
+  amber: '#D97706',
   red: '#EF4444',
   purple: '#8B5CF6',
   orange: '#F97316',
@@ -86,15 +87,26 @@ function PdfCover({ companyName, score, band, color, emoji, date }) {
   );
 }
 
-// ── PAGE 2: Oh Sh*t Moment ──────────────────────────────────
-function PdfOhShitMoment({ ohShitMoment, survivalStory }) {
+// ── PAGE 2: Diagnostic Section (band-aware) ────────────────
+function PdfOhShitMoment({ ohShitMoment, survivalStory, diagnosticLabel }) {
+  const tone = diagnosticLabel?.tone || 'danger';
+
+  const config = {
+    praise:   { bg: '#F0FDF4', border: '#86EFAC', accent: COLORS.green,  emoji: '🚀', heading: 'Investor Take' },
+    positive: { bg: '#F0FDF4', border: '#86EFAC', accent: COLORS.green,  emoji: '💪', heading: 'Your Strengths' },
+    neutral:  { bg: '#FFFBEB', border: '#FCD34D', accent: COLORS.amber,  emoji: '🔍', heading: 'What Needs Attention' },
+    danger:   { bg: '#FEF2F2', border: '#FECACA', accent: COLORS.red,    emoji: '⚠️', heading: "The 'Oh Sh*t' Moment" },
+  };
+
+  const cfg = config[tone] || config.danger;
+
   return (
     <Page size="A4" style={s.page}>
       <Text style={s.h1}>The Truth.</Text>
       <View style={s.divider} />
       <Text style={s.body}>{survivalStory}</Text>
-      <View style={[{ ...s.card, backgroundColor: '#FEF2F2', borderColor: '#FECACA', marginTop: 16 }]}>
-        <Text style={[s.h3, { color: COLORS.red }]}>⚠️ The "Oh Sh*t" Moment</Text>
+      <View style={[{ ...s.card, backgroundColor: cfg.bg, borderColor: cfg.border, marginTop: 16 }]}>
+        <Text style={[s.h3, { color: cfg.accent }]}>{cfg.emoji} {cfg.heading}</Text>
         <Text style={[s.body, { fontSize: 13, fontWeight: 'bold', marginTop: 8 }]}>
           "{ohShitMoment}"
         </Text>
@@ -395,6 +407,7 @@ const PdfReport = ({ fsiResult = {}, reportContent = {}, formData = {} }) => {
     emoji = '❓',
     description = '',
     ohShitMoment = '',
+    diagnosticLabel,
     metricBreakdown = [],
   } = fsiResult;
 
@@ -422,7 +435,7 @@ const PdfReport = ({ fsiResult = {}, reportContent = {}, formData = {} }) => {
       {/* Page 1 */}
       <PdfCover companyName={companyName} score={score} band={band} color={color} emoji={emoji} date={date} />
       {/* Page 2 */}
-      <PdfOhShitMoment ohShitMoment={ohShitMoment} survivalStory={survivalStory} />
+      <PdfOhShitMoment ohShitMoment={ohShitMoment} survivalStory={survivalStory} diagnosticLabel={diagnosticLabel} />
       {/* Page 3 */}
       <PdfScoreVisual score={score} band={band} color={color} emoji={emoji} description={description} metricBreakdown={metricBreakdown} />
       {/* Page 4 */}
