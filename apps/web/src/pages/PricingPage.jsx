@@ -123,7 +123,7 @@ const PricingPage = () => {
                 </Card>
               </motion.div>
 
-              {/* Tier 3: Financial Triage */}
+              {/* Tier 3: Runway Recovery Sprint */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -132,52 +132,16 @@ const PricingPage = () => {
               >
                 <Card className="w-full bg-card border-border flex flex-col hover:border-primary/50 transition-colors duration-300">
                   <CardHeader>
-                    <CardTitle className="text-xl text-muted-foreground font-medium">Financial Triage</CardTitle>
+                    <CardTitle className="text-xl text-muted-foreground font-medium">Runway Recovery Sprint</CardTitle>
                     <div className="mt-4 mb-2">
                       <span className="text-4xl font-bold">$997</span>
                       <span className="text-muted-foreground text-sm ml-2">USD</span>
                     </div>
-                    <p className="text-sm text-muted-foreground">One-time deep-dive focus</p>
+                    <p className="text-sm text-muted-foreground">5-week async program</p>
                   </CardHeader>
                   <CardContent className="flex-1">
                     <ul className="space-y-4">
-                      {['Focused 2-hour async deep-dive on ONE bottleneck', 'Written action plan delivered in 24hrs', 'Choose your focus: Pricing / Churn / Ad Spend / Runway', 'Everything in Founder Truth Audit'].map((feature, i) => (
-                        <li key={i} className="flex items-start gap-3 text-sm text-foreground/80">
-                          <Check className="w-5 h-5 text-primary shrink-0" />
-                          <span>{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </CardContent>
-                  <CardFooter className="mt-auto pt-6 border-t border-border/50">
-                    <a href="#stripe-l-triage" target="_blank" rel="noopener noreferrer" className="w-full">
-                      <Button variant="outline" className="w-full py-6 text-base border-primary/50 hover:bg-primary/10">
-                        Get Triage Plan
-                      </Button>
-                    </a>
-                  </CardFooter>
-                </Card>
-              </motion.div>
-
-              {/* Tier 4: Sprint */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.3 }}
-                className="flex"
-              >
-                <Card className="w-full bg-card border-border flex flex-col hover:border-primary/50 transition-colors duration-300">
-                  <CardHeader>
-                    <CardTitle className="text-xl text-muted-foreground font-medium">Recovery Sprint</CardTitle>
-                    <div className="mt-4 mb-2">
-                      <span className="text-4xl font-bold">$2,497</span>
-                      <span className="text-muted-foreground text-sm ml-2">USD</span>
-                    </div>
-                    <p className="text-sm text-muted-foreground">5-Week guided async program</p>
-                  </CardHeader>
-                  <CardContent className="flex-1">
-                    <ul className="space-y-4">
-                      {['5 Weeks of guided execution', 'Weekly AI Truth Report + Loom video', 'Unlimited async Q&A via email/Slack', 'Financial model reconstruction', 'Pitch deck financial narrative review', 'Everything in Full Audit'].map((feature, i) => (
+                      {['5 Weeks of guided execution', 'Weekly AI Truth Report + Loom video', 'Unlimited async Q&A via email/Slack', 'Everything in Full Audit'].map((feature, i) => (
                         <li key={i} className="flex items-start gap-3 text-sm text-foreground/80">
                           <Check className="w-5 h-5 text-primary shrink-0" />
                           <span>{feature}</span>
@@ -187,8 +151,44 @@ const PricingPage = () => {
                   </CardContent>
                   <CardFooter className="mt-auto pt-6 border-t border-border/50">
                     <a href="#stripe-l3" target="_blank" rel="noopener noreferrer" className="w-full">
-                      <Button variant="outline" className="w-full py-6 text-base border-border hover:bg-secondary">
+                      <Button variant="outline" className="w-full py-6 text-base border-primary/50 hover:bg-primary/10">
                         Start Sprint Program
+                      </Button>
+                    </a>
+                  </CardFooter>
+                </Card>
+              </motion.div>
+
+              {/* Tier 4: Portfolio Pack */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.3 }}
+                className="flex"
+              >
+                <Card className="w-full bg-card border-border flex flex-col hover:border-primary/50 transition-colors duration-300">
+                  <CardHeader>
+                    <CardTitle className="text-xl text-muted-foreground font-medium">Portfolio Pack</CardTitle>
+                    <div className="mt-4 mb-2">
+                      <span className="text-4xl font-bold">$2,497</span>
+                      <span className="text-muted-foreground text-sm ml-2">USD</span>
+                    </div>
+                    <p className="text-sm text-muted-foreground">10 audits, white-label</p>
+                  </CardHeader>
+                  <CardContent className="flex-1">
+                    <ul className="space-y-4">
+                      {['Best for agencies/platforms', '10 Founder Truth Audits included', 'White-labeled PDF reports', 'Bulk discount applied', 'Priority delivery SLA'].map((feature, i) => (
+                        <li key={i} className="flex items-start gap-3 text-sm text-foreground/80">
+                          <Check className="w-5 h-5 text-primary shrink-0" />
+                          <span>{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </CardContent>
+                  <CardFooter className="mt-auto pt-6 border-t border-border/50">
+                    <a href="#stripe-l4" target="_blank" rel="noopener noreferrer" className="w-full">
+                      <Button variant="outline" className="w-full py-6 text-base border-border hover:bg-secondary">
+                        Get Portfolio Pack
                       </Button>
                     </a>
                   </CardFooter>
@@ -210,6 +210,63 @@ const PricingPage = () => {
               </div>
             </motion.div>
 
+          </div>
+        </section>
+
+        {/* TRUST & DIFFERENTIATION SECTION */}
+        <section className="section-padding bg-secondary/20">
+          <div className="container-custom">
+            <div className="max-w-4xl mx-auto text-center">
+              <h2 className="text-3xl font-bold mb-6">No Calls. Ever. 100% Async Delivery.</h2>
+              <p className="text-lg text-muted-foreground mb-12">
+                We know you're busy running a company. You don't have time for discovery calls or high-pressure sales pitches. Our entire process is designed for maximum insight with minimum friction.
+              </p>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
+                <div className="p-6 rounded-xl bg-card border border-border">
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                    <span className="text-xl">⏱️</span>
+                  </div>
+                  <h4 className="font-bold mb-2">Fast Turnaround</h4>
+                  <p className="text-sm text-muted-foreground">Most reports are delivered within 24 hours of payment. No waiting weeks for an analyst to build a model.</p>
+                </div>
+
+                <div className="p-6 rounded-xl bg-card border border-border">
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                    <span className="text-xl">📹</span>
+                  </div>
+                  <h4 className="font-bold mb-2">Loom Walkthroughs</h4>
+                  <p className="text-sm text-muted-foreground">We explain your numbers via Loom video. Watch it when it fits your schedule, share it with your co-founders.</p>
+                </div>
+
+                <div className="p-6 rounded-xl bg-card border border-border">
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                    <span className="text-xl">🛡️</span>
+                  </div>
+                  <h4 className="font-bold mb-2">Total Privacy</h4>
+                  <p className="text-sm text-muted-foreground">Your financial data is yours. We offer standard NDAs for all paid tiers before you even share your numbers.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* PRICING FAQ */}
+        <section className="section-padding">
+          <div className="container-custom max-w-3xl">
+            <h2 className="text-3xl font-bold text-center mb-12">Pricing FAQ</h2>
+            <div className="space-y-4">
+              {[
+                { q: "What's the difference between the $49 and $297 plan?", a: "The $49 scan is purely automated based on our FSI engine. The $297 Audit includes a human review, a personalized Loom video explaining the nuances of your situation, and a 30-day step-by-step recovery plan." },
+                { q: "Do you offer refunds?", a: "Because of the digital and custom nature of our audits, we don't offer standard refunds. However, if you feel the analysis was completely off-base, we will review it and make it right." },
+                { q: "How do the Portfolio Packs work?", a: "Agencies and VCs buy a pack of 10 audits at a discount. You send us the financial data for 10 startups, and we return 10 white-labeled reports that you can present as your own value-add." }
+              ].map((faq, i) => (
+                <div key={i} className="p-6 rounded-xl border border-border bg-card">
+                  <h4 className="font-bold text-lg mb-2">{faq.q}</h4>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{faq.a}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </section>
 

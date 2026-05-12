@@ -1,0 +1,19 @@
+
+> web@0.0.0 dev
+> vite --host :: --port 3000
+
+
+  VITE v7.3.2  ready in 676 ms
+
+  ➜  Local:   http://localhost:3000/
+  ➜  Network: http://192.168.0.2:3000/
+11:59:00 AM [vite] (client) hmr update /src/pages/HomePage.jsx, /src/index.css
+12:00:33 PM [vite] (client) hmr update /src/pages/HomePage.jsx, /src/index.css
+12:12:37 PM [vite] (client) hmr update /src/index.css, /src/pages/SurvivalScorePage.jsx, /src/pages/ContactPage.jsx
+12:30:23 PM [vite] (client) hmr update /src/pages/PricingPage.jsx, /src/index.css
+12:33:21 PM [vite] (client) hmr update /src/pages/PricingPage.jsx, /src/index.css
+12:44:14 PM [vite] (client) hmr update /src/pages/ContactPage.jsx, /src/index.css
+12:51:04 PM [vite] (client) hmr update /src/pages/TermsOfServicePage.jsx, /src/index.css
+12:55:12 PM [vite] (client) hmr update /src/index.css, /src/components/Header.jsx
+12:56:47 PM [vite] (client) hmr update /src/index.css, /src/components/Footer.jsx
+1:12:02 PM [vite] (client) page reload src/main.jsx

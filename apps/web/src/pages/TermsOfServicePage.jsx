@@ -37,7 +37,7 @@ const TermsOfServicePage = () => {
                 <section>
                   <h2 className="text-2xl font-semibold mb-4">2. Delivery</h2>
                   <p>
-                    For users who purchase the detailed PDF report (₹999), we commit to delivering the customized report within 24 hours of successful payment confirmation. The report will be sent to the email address provided during checkout. If the report is not delivered within the specified timeframe, you are eligible for a full refund.
+                    For users who purchase our Audit or Sprint services, we commit to delivering the initial customized report and materials within 24 hours of successful payment confirmation and data submission. The report will be sent to the email address provided during checkout.
                   </p>
                 </section>
 
@@ -58,14 +58,7 @@ const TermsOfServicePage = () => {
                 <section>
                   <h2 className="text-2xl font-semibold mb-4">5. Governing Law</h2>
                   <p>
-                    These Terms of Service and your use of FoundersROI shall be governed by and construed in accordance with the laws of India.
-                  </p>
-                </section>
-
-                <section>
-                  <h2 className="text-2xl font-semibold mb-4">6. Disputes</h2>
-                  <p>
-                    Any disputes arising out of or related to these Terms or the FoundersROI service shall be subject to the exclusive jurisdiction of the courts located in Delhi, India.
+                    These Terms of Service and your use of FoundersROI shall be governed by and construed in accordance with standard business laws.
                   </p>
                 </section>
               </div>
