@@ -8,6 +8,7 @@ import Header from '@/components/Header.jsx';
 import Footer from '@/components/Footer.jsx';
 import ConversationalStep from '@/components/ConversationalStep.jsx';
 import MetricInput from '@/components/MetricInput.jsx';
+import TextInput from '@/components/TextInput.jsx';
 import ScoreDisplay from '@/components/ScoreDisplay.jsx';
 import EmailGateModal from '@/components/EmailGateModal.jsx';
 import SurvivalBadge from '@/components/SurvivalBadge.jsx';
@@ -197,14 +198,14 @@ const SurvivalScorePage = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-8">
-          <MetricInput
+          <TextInput
             id="companyName"
             label="Company Name (Optional)"
             value={formData.companyName}
             onChange={(val) => setFormData({ ...formData, companyName: val })}
             placeholder="Acme Corp"
           />
-          <MetricInput
+          <TextInput
             id="businessModel"
             label="Business Model"
             value={formData.businessModel}

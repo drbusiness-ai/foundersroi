@@ -1,59 +1,24 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 
-const MetricInput = ({
+const TextInput = ({
   id,
   label,
   value,
   onChange,
-  prefix = '',
-  suffix = '',
-  placeholder = '0',
-  min = 0,
-  max = Infinity,
-  step = 1,
+  placeholder = '',
   tooltip = '',
   error = '',
+  maxLength = 100,
 }) => {
   const [focused, setFocused] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
-  const inputRef = useRef(null);
 
   const handleChange = (e) => {
-    const raw = e.target.value;
-    
-    // Allow empty input
-    if (raw === '') {
-      onChange(0);
-      return;
+    const text = e.target.value;
+    if (text.length <= maxLength) {
+      onChange(text);
     }
-    
-    // Remove any non-numeric and non-decimal characters
-    const cleaned = raw.replace(/[^0-9.]/g, '');
-    
-    // Handle multiple decimals - keep only first one
-    const parts = cleaned.split('.');
-    const numericPart = parts[0] ? parts[0] : '0';
-    const decimalPart = parts.length > 1 ? parts[1] : '';
-    const finalValue = decimalPart ? `${numericPart}.${decimalPart}` : numericPart;
-    
-    const num = parseFloat(finalValue);
-    
-    if (!isNaN(num) && finalValue !== '') {
-      // Clamp value between min and max
-      const clampedValue = Math.min(Math.max(num, min), max);
-      onChange(clampedValue);
-    } else if (finalValue === '') {
-      onChange(0);
-    }
-  };
-
-  const formatDisplay = (val) => {
-    // Don't format for display - show raw number so user can see actual value
-    if (val === 0 || val === '') {
-      return '';
-    }
-    return val.toString();
   };
 
   return (
@@ -99,31 +64,18 @@ const MetricInput = ({
               : 'border-border bg-secondary/30 hover:border-border/60'
           }
         `}
-        onClick={() => inputRef.current?.focus()}
       >
-        {prefix && (
-          <span className="pl-4 text-muted-foreground font-medium select-none">
-            {prefix}
-          </span>
-        )}
         <input
-          ref={inputRef}
           id={id}
           type="text"
-          inputMode="decimal"
-          value={value || ''}
+          value={value}
           onChange={handleChange}
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
           placeholder={placeholder}
-          step={step}
-          className="w-full px-3 py-3.5 bg-transparent text-foreground text-base font-medium outline-none placeholder:text-muted-foreground/40"
+          maxLength={maxLength}
+          className="w-full px-4 py-3.5 bg-transparent text-foreground text-base font-medium outline-none placeholder:text-muted-foreground/40"
         />
-        {suffix && (
-          <span className="pr-4 text-muted-foreground font-medium select-none">
-            {suffix}
-          </span>
-        )}
       </div>
 
       {error && (
@@ -139,4 +91,4 @@ const MetricInput = ({
   );
 };
 
-export default MetricInput;
+export default TextInput;
