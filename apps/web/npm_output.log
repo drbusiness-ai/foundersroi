@@ -17,3 +17,5 @@
 12:55:12 PM [vite] (client) hmr update /src/index.css, /src/components/Header.jsx
 12:56:47 PM [vite] (client) hmr update /src/index.css, /src/components/Footer.jsx
 1:12:02 PM [vite] (client) page reload src/main.jsx
+6:35:56 PM [vite] (client) hmr update /src/index.css, /src/components/MetricInput.jsx
+6:35:58 PM [vite] (client) hmr update /src/pages/SurvivalScorePage.jsx, /src/index.css

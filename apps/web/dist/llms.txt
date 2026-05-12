@@ -1,6 +1,6 @@
 ## Pages
 - ['s Survival Score: $/100 | FoundersROI`}](/scoreresult): No description available
-- [Contact Us - FoundersROI](/contact): Get your free AI ROI analysis. Contact us to learn how AI automation can transform your business.
+- [Contact Us - FoundersROI](/contact): Have questions? Reach out to us. Note: Backend integration pending.
 - [FoundersROI — The AI Startup Truth Engine](/home): Is your startup going to survive? Get your AI-powered Survival Score in 60 seconds and know exactly what to fix before it
 - [Pricing | FoundersROI](/pricing): Choose your Startup Truth Audit. No calls. Fully async delivery.
 - [Untitled Page](/notfound): The page you are looking for doesn

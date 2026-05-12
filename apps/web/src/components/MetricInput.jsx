@@ -14,12 +14,18 @@ const MetricInput = ({
   step = 1,
   tooltip = '',
   error = '',
+  isNumeric = true,
 }) => {
   const [focused, setFocused] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
   const inputRef = useRef(null);
 
   const handleChange = (e) => {
+    if (!isNumeric) {
+      onChange(e.target.value);
+      return;
+    }
+
     const raw = e.target.value.replace(/[^0-9.]/g, '');
     const num = parseFloat(raw);
     if (raw === '' || raw === '.') {
@@ -32,8 +38,11 @@ const MetricInput = ({
   };
 
   const formatDisplay = (val) => {
+    if (!isNumeric) {
+      return val || '';
+    }
     if (prefix === '$') {
-      return val.toLocaleString('en-US');
+      return Number(val).toLocaleString('en-US');
     }
     return val.toString();
   };

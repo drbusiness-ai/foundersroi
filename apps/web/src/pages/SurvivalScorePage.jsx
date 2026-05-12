@@ -203,6 +203,7 @@ const SurvivalScorePage = () => {
             value={formData.companyName}
             onChange={(val) => setFormData({ ...formData, companyName: val })}
             placeholder="Acme Corp"
+            isNumeric={false}
           />
           <MetricInput
             id="businessModel"
@@ -210,6 +211,7 @@ const SurvivalScorePage = () => {
             value={formData.businessModel}
             onChange={(val) => setFormData({ ...formData, businessModel: val })}
             placeholder="SaaS, E-commerce, etc."
+            isNumeric={false}
           />
           
           <MetricInput
