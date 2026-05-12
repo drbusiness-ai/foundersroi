@@ -1,13 +1,72 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import { Helmet } from 'react-helmet';
 import { motion } from 'framer-motion';
-import { Check, Shield, Zap } from 'lucide-react';
+import { Check, Shield, Zap, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button.jsx';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card.jsx';
 import Header from '@/components/Header.jsx';
 import Footer from '@/components/Footer.jsx';
+import { redirectToStripeCheckout, TIER_PRICE_IDS } from '@/lib/stripeClient.js';
 
 const PricingPage = () => {
+  const [checkoutTier, setCheckoutTier] = useState(null);
+  const [checkoutError, setCheckoutError] = useState('');
+
+  const handleStartCheckout = useCallback(async (tier, email) => {
+    // If no email is known yet, prompt the user
+    if (!email || !email.includes('@')) {
+      const userEmail = window.prompt('Enter your email to receive the report:');
+      if (!userEmail || !userEmail.includes('@')) {
+        setCheckoutError('A valid email is required to receive your report.');
+        return;
+      }
+      email = userEmail;
+    }
+
+    setCheckoutError('');
+    setCheckoutTier(tier);
+
+    try {
+      // Read stored FSI data from session (set by SurvivalScorePage after calculation)
+      let fsiResult = {};
+      let formData = {};
+      try {
+        const storedSession = sessionStorage.getItem('foundersroi_session');
+        if (storedSession) {
+          const parsed = JSON.parse(storedSession);
+          fsiResult = parsed.fsiResult || {};
+          formData = parsed.formData || {};
+        }
+      } catch (_) {
+        // Session data not available — continue without it
+      }
+
+      await redirectToStripeCheckout({
+        tier,
+        email,
+        fsiResult,
+        formData,
+      });
+
+      // redirectToStripeCheckout navigates away on success,
+      // so we only reach here if something went wrong.
+      setCheckoutError('Redirect failed. Please try again.');
+    } catch (err) {
+      console.error('[PricingPage] Checkout error:', err);
+
+      // Provide a helpful message when API is not yet configured
+      const msg = err.message || '';
+      if (msg.includes('not configured') || msg.includes('not set') || msg.includes('Failed to fetch')) {
+        setCheckoutError(
+          'Payment processing is being set up. Please check back shortly or contact us at founders@foundersroi.com.'
+        );
+      } else {
+        setCheckoutError(msg || 'Something went wrong. Please try again.');
+      }
+    } finally {
+      setCheckoutTier(null);
+    }
+  }, []);
   return (
     <>
       <Helmet>
@@ -70,11 +129,18 @@ const PricingPage = () => {
                     </ul>
                   </CardContent>
                   <CardFooter className="mt-auto pt-6 border-t border-border/50">
-                    <a href="#stripe-l1" target="_blank" rel="noopener noreferrer" className="w-full">
-                      <Button variant="outline" className="w-full py-6 text-base border-primary/50 hover:bg-primary/10">
-                        Get Instant Scan
-                      </Button>
-                    </a>
+                    <Button
+                      variant="outline"
+                      className="w-full py-6 text-base border-primary/50 hover:bg-primary/10"
+                      onClick={() => handleStartCheckout('l1')}
+                      disabled={checkoutTier !== null}
+                    >
+                      {checkoutTier === 'l1' ? (
+                        <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Redirecting...</>
+                      ) : (
+                        'Get Instant Scan — $49'
+                      )}
+                    </Button>
                   </CardFooter>
                 </Card>
               </motion.div>
@@ -114,11 +180,17 @@ const PricingPage = () => {
                     </ul>
                   </CardContent>
                   <CardFooter className="mt-auto pt-6 border-t border-border/30">
-                    <a href="#stripe-l2" target="_blank" rel="noopener noreferrer" className="w-full">
-                      <Button className="w-full bg-primary text-primary-foreground hover:bg-primary/90 py-6 text-base transition-all duration-200 active:scale-[0.98] glow-primary font-bold">
-                        Get Full Audit — $297
-                      </Button>
-                    </a>
+                    <Button
+                      className="w-full bg-primary text-primary-foreground hover:bg-primary/90 py-6 text-base transition-all duration-200 active:scale-[0.98] glow-primary font-bold"
+                      onClick={() => handleStartCheckout('l2')}
+                      disabled={checkoutTier !== null}
+                    >
+                      {checkoutTier === 'l2' ? (
+                        <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Redirecting...</>
+                      ) : (
+                        'Get Full Audit — $297'
+                      )}
+                    </Button>
                   </CardFooter>
                 </Card>
               </motion.div>
@@ -150,11 +222,18 @@ const PricingPage = () => {
                     </ul>
                   </CardContent>
                   <CardFooter className="mt-auto pt-6 border-t border-border/50">
-                    <a href="#stripe-l-triage" target="_blank" rel="noopener noreferrer" className="w-full">
-                      <Button variant="outline" className="w-full py-6 text-base border-primary/50 hover:bg-primary/10">
-                        Get Triage Plan
-                      </Button>
-                    </a>
+                    <Button
+                      variant="outline"
+                      className="w-full py-6 text-base border-primary/50 hover:bg-primary/10"
+                      onClick={() => handleStartCheckout('l3')}
+                      disabled={checkoutTier !== null}
+                    >
+                      {checkoutTier === 'l3' ? (
+                        <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Redirecting...</>
+                      ) : (
+                        'Get Triage Plan — $997'
+                      )}
+                    </Button>
                   </CardFooter>
                 </Card>
               </motion.div>
@@ -186,16 +265,41 @@ const PricingPage = () => {
                     </ul>
                   </CardContent>
                   <CardFooter className="mt-auto pt-6 border-t border-border/50">
-                    <a href="#stripe-l3" target="_blank" rel="noopener noreferrer" className="w-full">
-                      <Button variant="outline" className="w-full py-6 text-base border-border hover:bg-secondary">
-                        Start Sprint Program
-                      </Button>
-                    </a>
+                    <Button
+                      variant="outline"
+                      className="w-full py-6 text-base border-border hover:bg-secondary"
+                      onClick={() => handleStartCheckout('l4')}
+                      disabled={checkoutTier !== null}
+                    >
+                      {checkoutTier === 'l4' ? (
+                        <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Redirecting...</>
+                      ) : (
+                        'Start Sprint Program — $2,497'
+                      )}
+                    </Button>
                   </CardFooter>
                 </Card>
               </motion.div>
 
             </div>
+
+            {/* Checkout Error Banner */}
+            {checkoutError && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mt-6 mx-auto max-w-2xl bg-destructive/10 border border-destructive/30 text-destructive rounded-lg px-4 py-3 flex items-start gap-3"
+              >
+                <span className="text-sm flex-1">{checkoutError}</span>
+                <button
+                  onClick={() => setCheckoutError('')}
+                  className="text-destructive/70 hover:text-destructive shrink-0"
+                  aria-label="Dismiss error"
+                >
+                  ✕
+                </button>
+              </motion.div>
+            )}
 
             {/* Trust Footer */}
             <motion.div 
