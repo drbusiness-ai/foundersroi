@@ -32,9 +32,9 @@ const PricingPage = () => {
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary/80 border border-border text-sm font-medium mb-4">
                 <span className="text-primary">⚡️</span> 100% Async Delivery
               </div>
-              <h1 className="mb-4 text-4xl md:text-5xl font-bold">The Truth. No Calls Required.</h1>
+              <h1 className="mb-4 text-4xl md:text-5xl font-bold">The Truth.</h1>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Select your level of analysis. Delivered directly to your inbox. No sales calls, no pitches, just pure actionable truth.
+                Select your level of analysis. Delivered directly to your inbox. 100% async delivery. No sales calls, ever.
               </p>
             </motion.div>
 
@@ -166,9 +166,6 @@ const PricingPage = () => {
                 <Shield className="w-5 h-5 text-primary" />
                 <span className="text-sm font-medium">All founder data is kept strictly confidential. NDA available on request.</span>
               </div>
-              <p className="text-xs text-muted-foreground uppercase tracking-widest font-bold mt-4">
-                NO CALLS. EVER.
-              </p>
             </motion.div>
 
           </div>
