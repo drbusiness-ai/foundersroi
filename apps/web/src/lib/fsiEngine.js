@@ -2,6 +2,17 @@
  * FoundersROI — Founder Survival Index (FSI) Engine
  * 100% deterministic, client-side, offline-capable.
  * No external dependencies. No AI calls.
+ *
+ * METRIC NAMING NOTE:
+ *   The 5th metric is "Revenue Momentum" (Revenue / Burn ratio).
+ *   The Architecture v2 doc references "Gross Margin" as the 5th metric —
+ *   this is a naming discrepancy. The PRD and code use Revenue Momentum,
+ *   which is the canonical source of truth.
+ *
+ * UNUSED INPUTS (reserved for Phase 2 AI narrative enrichment):
+ *   - teamSize      → used in AI report for burn-per-head and team efficiency scoring
+ *   - stage         → used in AI report for stage-appropriate benchmark comparisons
+ *   - businessModel → used in AI report for model-specific risk flags
  */
 
 // ── Survival Band Definitions ──────────────────────────────
@@ -171,6 +182,82 @@ function getBand(score) {
   return BANDS.find(b => clamped >= b.min && clamped <= b.max) || BANDS[0];
 }
 
+// ── Input Validation ───────────────────────────────────────
+
+/**
+ * Validates all numeric inputs before FSI calculation.
+ * Returns an object with { valid, errors[] }.
+ * Sanitizes: NaN, negative values, Infinity, absurdly large numbers.
+ *
+ * @param {Object} inputs — raw form inputs
+ * @returns {{ valid: boolean, errors: string[], sanitized: Object|null }}
+ */
+export function validateInputs(inputs) {
+  const errors = [];
+
+  // Numeric fields with their human-readable labels
+  const numericFields = [
+    { key: 'monthlyRevenue', label: 'Monthly Revenue', min: 0, max: 100_000_000 },
+    { key: 'monthlyBurn', label: 'Monthly Burn', min: 0, max: 50_000_000 },
+    { key: 'cashInBank', label: 'Cash in Bank', min: 0, max: 1_000_000_000 },
+    { key: 'cac', label: 'Customer Acquisition Cost', min: 0, max: 1_000_000 },
+    { key: 'ltv', label: 'Lifetime Value', min: 0, max: 10_000_000 },
+    { key: 'monthlyChurn', label: 'Monthly Churn', min: 0, max: 100 },
+    { key: 'teamSize', label: 'Team Size', min: 0, max: 100_000 },
+  ];
+
+  const sanitized = {};
+
+  for (const field of numericFields) {
+    const raw = inputs[field.key];
+    const num = Number(raw);
+
+    if (raw === undefined || raw === null || raw === '') {
+      // Empty is treated as 0 (acceptable for all fields except potentially monthlyBurn)
+      sanitized[field.key] = 0;
+      continue;
+    }
+
+    if (!Number.isFinite(num) || Number.isNaN(num)) {
+      errors.push(`${field.label} must be a valid number.`);
+      sanitized[field.key] = 0;
+      continue;
+    }
+
+    if (num < field.min) {
+      errors.push(`${field.label} cannot be negative.`);
+      sanitized[field.key] = 0;
+      continue;
+    }
+
+    if (num > field.max) {
+      errors.push(`${field.label} exceeds the maximum allowed value of ${field.max.toLocaleString()}.`);
+      sanitized[field.key] = 0;
+      continue;
+    }
+
+    sanitized[field.key] = num;
+  }
+
+  // Business logic validation (soft warnings, not hard errors)
+  if (sanitized.monthlyBurn === 0) {
+    errors.push('Monthly Burn cannot be zero — please enter your total monthly expenses.');
+  }
+  if (sanitized.monthlyChurn > 50) {
+    errors.push('Monthly Churn above 50% is unlikely. Please double-check your churn rate.');
+  }
+
+  // Carry through non-numeric fields
+  sanitized.stage = inputs.stage || '';
+  sanitized.businessModel = inputs.businessModel || '';
+
+  return {
+    valid: errors.length === 0 || errors.every(e => e.includes('cannot') === false),
+    errors,
+    sanitized,
+  };
+}
+
 // ── Main FSI Calculator ────────────────────────────────────
 
 /**
@@ -183,9 +270,9 @@ function getBand(score) {
  * @param {number} inputs.cac             — Customer Acquisition Cost in $
  * @param {number} inputs.ltv             — Average Lifetime Value in $
  * @param {number} inputs.monthlyChurn    — Monthly churn rate in %
- * @param {number} inputs.teamSize        — Number of team members
- * @param {string} inputs.stage           — Funding stage
- * @param {string} inputs.businessModel   — Business model type
+ * @param {number} [inputs.teamSize]      — (Phase 2) Number of team members — reserved for AI narrative enrichment
+ * @param {string} [inputs.stage]         — (Phase 2) Funding stage — reserved for stage-appropriate benchmarks
+ * @param {string} [inputs.businessModel] — (Phase 2) Business model type — reserved for model-specific risk flags
  *
  * @returns {Object} FSI result
  */
@@ -197,6 +284,7 @@ export function calculateFSI(inputs) {
     cac = 0,
     ltv = 0,
     monthlyChurn = 0,
+    // teamSize, stage, businessModel — reserved for Phase 2 AI narrative enrichment
   } = inputs;
 
   // Calculate sub-scores
