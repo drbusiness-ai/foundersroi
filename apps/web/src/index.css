@@ -1,0 +1,262 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 240 10% 6%;
+    --foreground: 0 0% 100%;
+    --primary: 262 83% 58%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 240 6% 15%;
+    --secondary-foreground: 0 0% 100%;
+    --accent: 262 83% 58%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --muted: 240 6% 15%;
+    --muted-foreground: 240 5% 65%;
+    --card: 240 8% 10%;
+    --card-foreground: 0 0% 100%;
+    --popover: 240 8% 10%;
+    --popover-foreground: 0 0% 100%;
+    --border: 240 6% 20%;
+    --input: 240 6% 20%;
+    --ring: 262 83% 58%;
+    --radius: 0.75rem;
+
+    /* Survival Band Colors */
+    --band-critical: 0 84% 60%;
+    --band-struggling: 25 95% 53%;
+    --band-stable: 48 96% 53%;
+    --band-growing: 142 71% 45%;
+    --band-investor: 262 83% 58%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: "DM Sans", sans-serif;
+    overflow-x: clip;
+    font-variant-numeric: tabular-nums;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    text-wrap: balance;
+  }
+
+  h1 {
+    @apply text-4xl md:text-5xl lg:text-6xl font-bold leading-tight;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    @apply text-3xl md:text-4xl font-bold leading-tight;
+    letter-spacing: -0.01em;
+  }
+
+  h3 {
+    @apply text-2xl md:text-3xl font-semibold leading-snug;
+  }
+
+  h4 {
+    @apply text-xl md:text-2xl font-semibold leading-snug;
+  }
+
+  p {
+    @apply text-base leading-relaxed max-w-prose;
+  }
+}
+
+@layer components {
+  .container-custom {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .section-padding {
+    @apply py-20 md:py-24;
+  }
+
+  .gradient-text {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, hsl(262 83% 58%), hsl(280 90% 65%), hsl(330 85% 60%));
+  }
+
+  .card-hover {
+    @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+  }
+
+  /* Glassmorphism */
+  .glass-card {
+    background: hsla(240, 8%, 10%, 0.6);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid hsla(240, 6%, 100%, 0.08);
+  }
+
+  .glass-card-strong {
+    background: hsla(240, 8%, 12%, 0.75);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid hsla(240, 6%, 100%, 0.12);
+  }
+
+  /* Score Gauge Ring */
+  .score-ring {
+    --score-angle: 0deg;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: conic-gradient(
+      var(--score-color, hsl(262 83% 58%)) var(--score-angle),
+      hsla(240, 6%, 20%, 0.4) var(--score-angle)
+    );
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .score-ring-inner {
+    width: 170px;
+    height: 170px;
+    border-radius: 50%;
+    background: hsl(240, 10%, 6%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+
+  /* Conversational Step Transitions */
+  .step-enter {
+    animation: stepSlideIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  .step-exit {
+    animation: stepSlideOut 0.3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  /* Blurred Report Overlay */
+  .report-blur {
+    filter: blur(6px);
+    user-select: none;
+    pointer-events: none;
+  }
+
+  /* Hero Grid Background */
+  .hero-grid {
+    background-image:
+      linear-gradient(hsla(262, 83%, 58%, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, hsla(262, 83%, 58%, 0.05) 1px, transparent 1px);
+    background-size: 64px 64px;
+  }
+
+  /* Glow effect for primary elements */
+  .glow-primary {
+    box-shadow: 0 0 40px -8px hsla(262, 83%, 58%, 0.3),
+                0 0 80px -16px hsla(262, 83%, 58%, 0.15);
+  }
+
+  .glow-score {
+    box-shadow: 0 0 60px -12px var(--score-glow, hsla(262, 83%, 58%, 0.4));
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Survival Band Utilities */
+  .bg-band-critical { background-color: hsl(var(--band-critical)); }
+  .text-band-critical { color: hsl(var(--band-critical)); }
+  .border-band-critical { border-color: hsl(var(--band-critical)); }
+
+  .bg-band-struggling { background-color: hsl(var(--band-struggling)); }
+  .text-band-struggling { color: hsl(var(--band-struggling)); }
+  .border-band-struggling { border-color: hsl(var(--band-struggling)); }
+
+  .bg-band-stable { background-color: hsl(var(--band-stable)); }
+  .text-band-stable { color: hsl(var(--band-stable)); }
+  .border-band-stable { border-color: hsl(var(--band-stable)); }
+
+  .bg-band-growing { background-color: hsl(var(--band-growing)); }
+  .text-band-growing { color: hsl(var(--band-growing)); }
+  .border-band-growing { border-color: hsl(var(--band-growing)); }
+
+  .bg-band-investor { background-color: hsl(var(--band-investor)); }
+  .text-band-investor { color: hsl(var(--band-investor)); }
+  .border-band-investor { border-color: hsl(var(--band-investor)); }
+}
+
+/* ── Keyframe Animations ────────────────────── */
+
+@keyframes stepSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes stepSlideOut {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+}
+
+@keyframes countUp {
+  from { --num: 0; }
+  to { --num: var(--target); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.05); }
+}
+
+@keyframes floatUp {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Particle float animation */
+@keyframes particle-float {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); opacity: 0.3; }
+  25% { transform: translate(20px, -30px) rotate(90deg); opacity: 0.6; }
+  50% { transform: translate(-10px, -60px) rotate(180deg); opacity: 0.3; }
+  75% { transform: translate(30px, -30px) rotate(270deg); opacity: 0.6; }
+}
