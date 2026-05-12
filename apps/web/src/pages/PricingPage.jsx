@@ -33,12 +33,15 @@ const PricingPage = () => {
                 <span className="text-primary">⚡️</span> 100% Async Delivery
               </div>
               <h1 className="mb-4 text-4xl md:text-5xl font-bold">The Truth.</h1>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-4">
                 Select your level of analysis. Delivered directly to your inbox. 100% async delivery. No sales calls, ever.
+              </p>
+              <p className="text-md text-foreground font-medium max-w-2xl mx-auto">
+                Most founders discover a financial leak that could cut their runway in half — within minutes of taking the scan.
               </p>
             </motion.div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 max-w-7xl mx-auto">
               
               {/* Tier 1: Self-Serve */}
               <motion.div
@@ -98,6 +101,9 @@ const PricingPage = () => {
                     <p className="text-sm text-secondary-foreground/80">Deep dive analysis + Video</p>
                   </CardHeader>
                   <CardContent className="flex-1">
+                    <p className="text-xs text-primary font-bold uppercase tracking-wider mb-4 leading-relaxed">
+                      See exactly how an investor would judge your numbers.
+                    </p>
                     <ul className="space-y-4">
                       {['24-Hour Delivery via Email', '12-15 page AI + Human reviewed PDF', 'Personalized Loom video walkthrough', '30-Day step-by-step Recovery Plan', 'Investor Perception Analysis', 'Everything in AI Survival Scan'].map((feature, i) => (
                         <li key={i} className="flex items-start gap-3 text-sm text-secondary-foreground/90 font-medium">
@@ -117,7 +123,43 @@ const PricingPage = () => {
                 </Card>
               </motion.div>
 
-              {/* Tier 3: Sprint */}
+              {/* Tier 3: Financial Triage */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.25 }}
+                className="flex"
+              >
+                <Card className="w-full bg-card border-border flex flex-col hover:border-primary/50 transition-colors duration-300">
+                  <CardHeader>
+                    <CardTitle className="text-xl text-muted-foreground font-medium">Financial Triage</CardTitle>
+                    <div className="mt-4 mb-2">
+                      <span className="text-4xl font-bold">$997</span>
+                      <span className="text-muted-foreground text-sm ml-2">USD</span>
+                    </div>
+                    <p className="text-sm text-muted-foreground">One-time deep-dive focus</p>
+                  </CardHeader>
+                  <CardContent className="flex-1">
+                    <ul className="space-y-4">
+                      {['Focused 2-hour async deep-dive on ONE bottleneck', 'Written action plan delivered in 24hrs', 'Choose your focus: Pricing / Churn / Ad Spend / Runway', 'Everything in Founder Truth Audit'].map((feature, i) => (
+                        <li key={i} className="flex items-start gap-3 text-sm text-foreground/80">
+                          <Check className="w-5 h-5 text-primary shrink-0" />
+                          <span>{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </CardContent>
+                  <CardFooter className="mt-auto pt-6 border-t border-border/50">
+                    <a href="#stripe-l-triage" target="_blank" rel="noopener noreferrer" className="w-full">
+                      <Button variant="outline" className="w-full py-6 text-base border-primary/50 hover:bg-primary/10">
+                        Get Triage Plan
+                      </Button>
+                    </a>
+                  </CardFooter>
+                </Card>
+              </motion.div>
+
+              {/* Tier 4: Sprint */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
