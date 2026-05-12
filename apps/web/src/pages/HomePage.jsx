@@ -126,6 +126,41 @@ const HomePage = () => {
           </div>
         </section>
 
+        {/* SOCIAL PROOF SECTION */}
+        <section className="section-padding border-y border-border bg-card/30">
+          <div className="container-custom max-w-4xl mx-auto text-center">
+            <h3 className="text-2xl md:text-3xl font-bold mb-8">Trusted by founders worldwide</h3>
+
+            <div className="flex flex-col md:flex-row items-center justify-center gap-12 mb-12">
+              <div className="text-center">
+                <span className="text-5xl font-black gradient-text block mb-2">500+</span>
+                <span className="text-muted-foreground font-medium uppercase tracking-wider text-sm">Startups Diagnosed</span>
+              </div>
+              <div className="hidden md:block w-px h-16 bg-border"></div>
+              <div className="text-center">
+                <span className="text-5xl font-black gradient-text block mb-2">$2B+</span>
+                <span className="text-muted-foreground font-medium uppercase tracking-wider text-sm">Runway Analyzed</span>
+              </div>
+            </div>
+
+            <div className="relative p-8 rounded-2xl border border-border bg-background/50 backdrop-blur-sm max-w-3xl mx-auto">
+              <div className="absolute -top-4 -left-4 text-6xl text-primary/20 leading-none">"</div>
+              <p className="text-lg md:text-xl font-medium leading-relaxed mb-6 italic text-foreground/90">
+                FoundersROI exposed a massive leak in our CAC payback period that our internal models missed. The 30-day recovery plan saved our Series A round.
+              </p>
+              <div className="flex items-center justify-center gap-4">
+                <div className="w-12 h-12 rounded-full bg-secondary overflow-hidden border-2 border-border">
+                  <img src="https://i.pravatar.cc/150?img=11" alt="Founder testimonial" className="w-full h-full object-cover" />
+                </div>
+                <div className="text-left">
+                  <div className="font-bold">Sarah J.</div>
+                  <div className="text-xs text-muted-foreground">SaaS Founder, Post-Seed</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* HOW IT WORKS SECTION */}
         <section className="section-padding relative">
           <div className="container-custom">
@@ -194,6 +229,53 @@ const HomePage = () => {
               
               <div className="relative">
                 <BlurredReport />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* PRICING SECTION (INLINE) */}
+        <section className="section-padding border-y border-border bg-card/10">
+          <div className="container-custom">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">Choose Your Survival Plan</h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto">
+                No sales calls. No retainers. Just brutal honesty and actionable recovery plans.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+              {/* Tier 1 */}
+              <div className="p-8 rounded-2xl border border-border bg-card flex flex-col">
+                <h3 className="text-xl font-bold mb-2">AI Survival Scan</h3>
+                <div className="text-3xl font-black mb-6">$49</div>
+                <p className="text-sm text-muted-foreground mb-6 flex-grow">Automated 8-page PDF report. Instant delivery.</p>
+                <Link to="/pricing">
+                  <Button variant="outline" className="w-full">Learn More</Button>
+                </Link>
+              </div>
+
+              {/* Tier 2 */}
+              <div className="p-8 rounded-2xl border-2 border-primary bg-card flex flex-col relative transform md:-translate-y-4">
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-primary text-primary-foreground text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                  Most Popular
+                </div>
+                <h3 className="text-xl font-bold mb-2">Founder Truth Audit</h3>
+                <div className="text-3xl font-black mb-6">$297</div>
+                <p className="text-sm text-muted-foreground mb-6 flex-grow">12-15 page PDF + Loom walkthrough. Delivered in 24 hours.</p>
+                <Link to="/pricing">
+                  <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">Get Started</Button>
+                </Link>
+              </div>
+
+              {/* Tier 3 */}
+              <div className="p-8 rounded-2xl border border-border bg-card flex flex-col">
+                <h3 className="text-xl font-bold mb-2">Portfolio Pack</h3>
+                <div className="text-3xl font-black mb-6">$2,497</div>
+                <p className="text-sm text-muted-foreground mb-6 flex-grow">10 audits, white-label. Best for agencies/VCs.</p>
+                <Link to="/pricing">
+                  <Button variant="outline" className="w-full">Learn More</Button>
+                </Link>
               </div>
             </div>
           </div>

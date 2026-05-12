@@ -65,6 +65,18 @@ const Footer = () => {
                   Terms of Service
                 </Link>
               </li>
+              <li>
+                <button
+                  onClick={() => {
+                    const event = new Event('beforeinstallprompt');
+                    window.dispatchEvent(event);
+                    alert("If your device supports PWA installation, you should see a prompt now or the button in the header.");
+                  }}
+                  className="text-muted-foreground hover:text-primary transition-colors duration-200"
+                >
+                  Install App
+                </button>
+              </li>
             </ul>
           </div>
         </div>
