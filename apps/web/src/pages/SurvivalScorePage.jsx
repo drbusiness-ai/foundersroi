@@ -277,8 +277,8 @@ const MetricsStep = ({ formData, setFormData, validationErrors, isCalculating, o
   );
 };
 
-// --- Result View (module scope — stable reference, no input focus loss) ---
-const ResultView = ({ result, companyName, hasUnlocked, onUnlockClick }) => {
+// --- Result View (module scope — stable reference, memoized to prevent re-renders) ---
+const ResultView = React.memo(({ result, companyName, hasUnlocked, onUnlockClick, onScoreAnimationComplete }) => {
   if (!result) return null;
 
   return (
@@ -296,11 +296,7 @@ const ResultView = ({ result, companyName, hasUnlocked, onUnlockClick }) => {
             color={result.color}
             emoji={result.emoji}
             description={result.description}
-            onComplete={() => {
-              if (!hasUnlocked) {
-                setTimeout(() => onUnlockClick(), 1500);
-              }
-            }}
+            onComplete={onScoreAnimationComplete}
           />
         </div>
         <div className="flex justify-center lg:justify-end">
@@ -409,7 +405,7 @@ const ResultView = ({ result, companyName, hasUnlocked, onUnlockClick }) => {
       </AnimatePresence>
     </motion.div>
   );
-};
+});
 
 const SurvivalScorePage = () => {
   const [step, setStep] = useState(0);
@@ -531,6 +527,14 @@ const SurvivalScorePage = () => {
     setShowGate(true);
   }, []);
 
+  // Stable callback for when the score counter animation finishes.
+  // Only fires if the user hasn't unlocked yet, and the modal isn't already showing.
+  const handleScoreAnimationComplete = React.useCallback(() => {
+    if (!hasUnlocked && !showGate) {
+      setTimeout(() => setShowGate(true), 1500);
+    }
+  }, [hasUnlocked, showGate]);
+
   return (
     <>
       <Helmet>
@@ -577,6 +581,7 @@ const SurvivalScorePage = () => {
                 companyName={formData.companyName}
                 hasUnlocked={hasUnlocked}
                 onUnlockClick={handleUnlockClick}
+                onScoreAnimationComplete={handleScoreAnimationComplete}
               />
             )}
           </div>

@@ -5,12 +5,19 @@ const ScoreDisplay = ({ score, band, color, emoji, description, onComplete }) =>
   const [displayScore, setDisplayScore] = useState(0);
   const [animationDone, setAnimationDone] = useState(false);
   const animFrameRef = useRef(null);
+  const onCompleteRef = useRef(onComplete);
+  const hasCalledComplete = useRef(false);
 
-  // Count-up animation
+  // Keep onComplete ref current without re-triggering the effect
+  onCompleteRef.current = onComplete;
+
+  // Count-up animation — only restarts when score changes, not when onComplete ref changes
   useEffect(() => {
     const duration = 1800;
     const startTime = performance.now();
     const target = score;
+    hasCalledComplete.current = false;
+    setAnimationDone(false);
 
     const animate = (currentTime) => {
       const elapsed = currentTime - startTime;
@@ -24,7 +31,11 @@ const ScoreDisplay = ({ score, band, color, emoji, description, onComplete }) =>
         animFrameRef.current = requestAnimationFrame(animate);
       } else {
         setAnimationDone(true);
-        onComplete?.();
+        // Only fire onComplete once per animation cycle
+        if (!hasCalledComplete.current) {
+          hasCalledComplete.current = true;
+          onCompleteRef.current?.();
+        }
       }
     };
 
@@ -32,7 +43,7 @@ const ScoreDisplay = ({ score, band, color, emoji, description, onComplete }) =>
     return () => {
       if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
     };
-  }, [score, onComplete]);
+  }, [score]);
 
   const scoreAngle = (displayScore / 100) * 360;
 
